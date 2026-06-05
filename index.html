@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amanda Semmel Mackie | Enterprise Customer Success Executive</title>
+  <meta name="description" content="Enterprise CS and Professional Services leader with 12+ years in regulated SaaS. >100% NRR, $80M ARR portfolio, team builder, AI-forward operator." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0D2137;
+      --navy-mid: #153350;
+      --navy-light: #1E4570;
+      --accent: #2E86DE;
+      --accent-light: #5BA4F5;
+      --gold: #C4933F;
+      --white: #FFFFFF;
+      --off-white: #F7F8FA;
+      --gray-light: #EEF0F4;
+      --gray: #8A94A6;
+      --gray-dark: #4A5568;
+      --text: #1A2233;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13, 33, 55, 0.97);
+      backdrop-filter: blur(8px);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 2rem 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(46,134,222,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span { color: var(--accent-light); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,0.72);
+      max-width: 600px;
+      margin-bottom: 3rem;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .metric {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .metric:hover { background: rgba(255,255,255,0.11); }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      line-height: 1.4;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.75rem;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-primary:hover { background: #1a72cc; border-color: #1a72cc; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.35);
+    }
+
+    .btn-outline:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); }
+
+    /* SECTIONS */
+    section {
+      padding: 90px 2rem;
+    }
+
+    .section-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-body {
+      font-size: 1.05rem;
+      color: var(--gray-dark);
+      line-height: 1.8;
+      max-width: 680px;
+    }
+
+    /* ABOUT */
+    #about { background: var(--off-white); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .highlight {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .highlight-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    .highlight-text h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+    }
+
+    .highlight-text p {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* WINS */
+    #wins { background: var(--white); }
+
+    .wins-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .win-card {
+      background: var(--off-white);
+      border: 1px solid var(--gray-light);
+      border-radius: 14px;
+      padding: 1.75rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .win-card:hover {
+      box-shadow: 0 8px 30px rgba(13,33,55,0.1);
+      transform: translateY(-2px);
+    }
+
+    .win-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .win-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+    }
+
+    .win-desc {
+      font-size: 13px;
+      color: var(--gray-dark);
+      line-height: 1.6;
+    }
+
+    /* EXPERTISE */
+    #expertise { background: var(--navy); }
+
+    #expertise .section-title { color: var(--white); }
+    #expertise .section-label { color: var(--accent-light); }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .expertise-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      transition: background 0.2s;
+    }
+
+    .expertise-item:hover { background: rgba(255,255,255,0.1); }
+
+    .expertise-item span {
+      display: block;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 400;
+      margin-top: 0.3rem;
+    }
+
+    /* EXPERIENCE */
+    #experience { background: var(--off-white); }
+
+    .experience-list {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .exp-item:last-child { border-bottom: none; }
+
+    .exp-dates {
+      font-size: 13px;
+      color: var(--gray);
+      font-weight: 500;
+      padding-top: 3px;
+    }
+
+    .exp-role {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-company {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+
+    .exp-desc {
+      font-size: 14px;
+      color: var(--gray-dark);
+      line-height: 1.7;
+    }
+
+    /* CONTACT */
+    #contact { background: var(--white); }
+
+    .contact-card {
+      background: var(--navy);
+      border-radius: 20px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .contact-card h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+
+    .contact-card p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .contact-card { grid-template-columns: 1fr; }
+      .contact-links { flex-direction: row; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-name">Amanda Semmel Mackie</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#wins">Results</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Enterprise Customer Success &amp; Professional Services</p>
+      <h1>Amanda Semmel Mackie<br /><span>CS Leader. Team Builder.<br />Revenue Driver.</span></h1>
+      <p class="hero-sub">12+ years leading enterprise CS and PS organizations in complex, regulated SaaS environments. Known for turning high-stakes client relationships into measurable, predictable growth.</p>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-value">&gt;100%</div>
+          <div class="metric-label">NRR Sustained Across Enterprise Portfolio</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">$80M</div>
+          <div class="metric-label">ARR Under Direct Management</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">90%+</div>
+          <div class="metric-label">CSAT Across All Accounts</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">12+</div>
+          <div class="metric-label">Years Enterprise SaaS CS &amp; PS Leadership</div>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+        <a href="risk-calculator.html" class="btn btn-outline">Try the Risk Predictor →</a>
+        <a href="https://linkedin.com/in/asmackie" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div>
+          <p class="section-label">About</p>
+          <h2 class="section-title">I build the systems that make retention predictable.</h2>
+          <p class="section-body">I started as a hands-on project manager running complex software implementations in regulated clinical research environments. That foundation — knowing what great delivery looks like at the practitioner level — is what makes me a different kind of CS leader.</p>
+          <br />
+          <p class="section-body">At Medidata Solutions, I spent 7+ years transforming and scaling the CS and PS function, building the frameworks, playbooks, and engagement models that keep enterprise clients not just retained, but growing. I don't manage accounts. I build the infrastructure that makes great account management repeatable at scale.</p>
+          <br />
+          <p class="section-body">I'm also an AI-first operator — I've integrated tools like Google Gemini, Slack AI, and NotebookLM into CS workflows and advised enterprise clients navigating AI adoption in regulated environments.</p>
+        </div>
+        <div class="about-highlights">
+          <div class="highlight">
+            <div class="highlight-icon">🏗️</div>
+            <div class="highlight-text">
+              <h4>Infrastructure Builder</h4>
+              <p>SOP libraries, QMS frameworks, health scoring models, and playbooks that make outcomes consistent — not dependent on heroics.</p>
+            </div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-icon">📊</div>
+            <div class="highlight-text">
+              <h4>P&amp;L Accountable</h4>
+              <p>Full P&amp;L ownership over CS and PS portfolios. Revenue, margin, utilization, and cost of delivery — all on the same scorecard.</p>
+            </div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-icon">🤝</div>
+            <div class="highlight-text">
+              <h4>Executive Relationship Builder</h4>
+              <p>Deep experience managing VP and senior executive client relationships in demanding, regulated enterprise environments.</p>
+            </div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-icon">🤖</div>
+            <div class="highlight-text">
+              <h4>AI-Forward Operator</h4>
+              <p>Early adopter and practitioner of AI tools in CS workflows — not as a talking point, but as actual integrated daily practice.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WINS -->
+  <section id="wins">
+    <div class="section-inner">
+      <p class="section-label">Results</p>
+      <h2 class="section-title">What this looks like in practice.</h2>
+      <div class="wins-grid">
+        <div class="win-card">
+          <div class="win-number">3.5×</div>
+          <div class="win-title">Account Growth</div>
+          <div class="win-desc">Grew a flagship enterprise account from $10M to $35M in annual software revenue over four years — in partnership with the AE, through value roadmapping and sustained executive relationships.</div>
+        </div>
+        <div class="win-card">
+          <div class="win-number">&gt;100%</div>
+          <div class="win-title">NRR, Sustained</div>
+          <div class="win-desc">Sustained net revenue retention above 100% across a high-complexity portfolio of regulated enterprise clients — not in one good year, but consistently over the life of the accounts.</div>
+        </div>
+        <div class="win-card">
+          <div class="win-number">10%</div>
+          <div class="win-title">Platform Adoption Lift</div>
+          <div class="win-desc">Pioneered AI tool integration across CS workflows and advised enterprise clients on adoption in their own regulated environments, achieving a measurable 10% lift in platform adoption.</div>
+        </div>
+        <div class="win-card">
+          <div class="win-number">90%+</div>
+          <div class="win-title">CSAT, Consistently</div>
+          <div class="win-desc">Maintained client satisfaction scores above 90% across the portfolio — through platform changes, organizational shifts, and the full complexity of multi-stakeholder enterprise accounts.</div>
+        </div>
+        <div class="win-card">
+          <div class="win-number">50+</div>
+          <div class="win-title">Team Scope</div>
+          <div class="win-desc">Led 10 direct reports with dotted-line accountability for 50+ across the broader organization. Built the coaching cadences and performance frameworks that sustained quality through rapid growth.</div>
+        </div>
+        <div class="win-card">
+          <div class="win-number">$8M</div>
+          <div class="win-title">PS Revenue Owned</div>
+          <div class="win-desc">Direct P&amp;L accountability for $8M in Professional Services revenue — with ownership of margins, utilization, delivery quality, and client satisfaction tied together on one scorecard.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section id="expertise">
+    <div class="section-inner">
+      <p class="section-label">Expertise</p>
+      <h2 class="section-title">Where I operate well.</h2>
+      <div class="expertise-grid">
+        <div class="expertise-item">Renewal Forecast &amp; Governance<span>Risk frameworks, escalation models</span></div>
+        <div class="expertise-item">NRR / GRR Ownership<span>Retention, expansion, churn prevention</span></div>
+        <div class="expertise-item">Customer Health Scoring<span>Lifecycle design, intervention playbooks</span></div>
+        <div class="expertise-item">P&amp;L Management<span>Revenue, margins, cost of delivery</span></div>
+        <div class="expertise-item">Team Leadership &amp; Scaling<span>Directors to Associate PMs</span></div>
+        <div class="expertise-item">Executive QBR Design<span>VP and C-suite engagement</span></div>
+        <div class="expertise-item">Regulated Enterprise SaaS<span>Pharma, clinical research, compliance</span></div>
+        <div class="expertise-item">AI Workflow Integration<span>Gemini, Slack AI, NotebookLM</span></div>
+        <div class="expertise-item">SOP &amp; Delivery Governance<span>QMS frameworks, audit-readiness</span></div>
+        <div class="expertise-item">Cross-Functional Alignment<span>Sales, Product, Engineering</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-inner">
+      <p class="section-label">Experience</p>
+      <h2 class="section-title">Career history.</h2>
+      <div class="experience-list">
+        <div class="exp-item">
+          <div class="exp-dates">Apr 2022 – Jun 2026</div>
+          <div>
+            <div class="exp-role">Client Services Principal</div>
+            <div class="exp-company">Medidata Solutions</div>
+            <div class="exp-desc">Led enterprise CS and PS strategy across four global accounts representing $80M in annual software revenue. Managed 10 direct reports with dotted-line accountability for 50+ across the broader organization. Full P&amp;L accountability for $8M in Professional Services revenue.</div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dates">Nov 2019 – Apr 2022</div>
+          <div>
+            <div class="exp-role">Director, Client Services</div>
+            <div class="exp-company">Medidata Solutions</div>
+            <div class="exp-desc">Transformed and significantly elevated the CS and PS function. Designed the SOP library, QMS-aligned frameworks, onboarding playbooks, and quality standards. Built the renewal governance and health monitoring infrastructure from scratch.</div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dates">Jul 2016 – Nov 2019</div>
+          <div>
+            <div class="exp-role">Senior Project Manager &amp; Project Manager</div>
+            <div class="exp-company">Medidata Solutions</div>
+            <div class="exp-desc">Led high-complexity enterprise SaaS implementations in regulated clinical trial environments. Full accountability for scope, timelines, budget, and delivery quality across concurrent portfolios.</div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dates">Jun 2015 – Jun 2016</div>
+          <div>
+            <div class="exp-role">Project Manager</div>
+            <div class="exp-company">Oracle HSGBU</div>
+            <div class="exp-desc">Led software implementations focused on IRT delivery for healthcare and life sciences clients.</div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dates">May 2013 – May 2015</div>
+          <div>
+            <div class="exp-role">Project Manager</div>
+            <div class="exp-company">Almac Clinical Technologies</div>
+            <div class="exp-desc">Managed maintenance-phase IXRS clinical technology implementations for regulated life sciences clients.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL -->
+  <section id="tool" style="background: var(--navy); padding: 80px 2rem;">
+    <div class="section-inner" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+      <div>
+        <p class="section-label" style="color: var(--accent-light);">AI-Assisted CS Framework</p>
+        <h2 class="section-title" style="color: var(--white);">Renewal Risk Predictor</h2>
+        <p class="section-body" style="color: rgba(255,255,255,0.65);">I built this tool on the same framework I used to manage $80M in enterprise ARR. Input account signals across eight dimensions — adoption, executive engagement, champion stability, CSAT, and more — and get a real-time risk score and specific intervention plays.</p>
+        <br />
+        <p class="section-body" style="color: rgba(255,255,255,0.65);">It's not a demo. It's how I actually think about account health.</p>
+        <br />
+        <a href="risk-calculator.html" class="btn btn-primary" style="margin-top: 0.5rem;">Try the tool →</a>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📊</div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 0.25rem;">8 Signal Factors</div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Adoption, exec engagement, CSAT, champion, support, renewal timeline, and more</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚡</div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 0.25rem;">Real-time Scoring</div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Risk score updates instantly as you input signals</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎯</div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 0.25rem;">Intervention Plays</div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Specific recommended actions based on which signals are flagged</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🧠</div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 0.25rem;">Real Methodology</div>
+          <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Built from 7+ years managing regulated enterprise accounts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">Let's talk.</h2>
+      <div class="contact-card">
+        <div>
+          <h3>Open to senior CS and PS leadership roles.</h3>
+          <p>Director, Senior Director, VP, and Head-level positions at enterprise SaaS companies. Remote. If you're building something that needs a leader who has done this before in demanding, regulated environments — reach out.</p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:ALSemmel@gmail.com" class="btn btn-primary">Email Me</a>
+          <a href="https://linkedin.com/in/asmackie" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Amanda Semmel Mackie &nbsp;·&nbsp; Enterprise Customer Success Executive &nbsp;·&nbsp; Alameda, CA</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Renewal Risk Predictor | Amanda Semmel Mackie</title>
+  <meta name="description" content="An interactive enterprise account renewal risk assessment tool built on real CS methodology." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0D2137; --navy-mid: #153350; --accent: #2E86DE; --accent-light: #5BA4F5;
+      --white: #FFFFFF; --off-white: #F7F8FA; --gray-light: #EEF0F4;
+      --gray: #8A94A6; --gray-dark: #4A5568; --text: #1A2233;
+      --green: #10B981; --green-bg: #ECFDF5; --green-text: #065F46;
+      --yellow: #F59E0B; --yellow-bg: #FFFBEB; --yellow-text: #78350F;
+      --orange: #F97316; --orange-bg: #FFF7ED; --orange-text: #7C2D12;
+      --red: #EF4444; --red-bg: #FEF2F2; --red-text: #7F1D1D;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); color: var(--text); background: var(--off-white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    nav { background: var(--navy); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-name { font-size: 14px; font-weight: 600; color: var(--white); }
+    .nav-back { font-size: 13px; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--white); }
+
+    .tool-header { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); padding: 3rem 2rem 2.5rem; text-align: center; }
+    .tool-badge { display: inline-block; background: rgba(46,134,222,0.2); color: var(--accent-light); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 20px; border: 1px solid rgba(91,164,245,0.3); margin-bottom: 1rem; }
+    .tool-header h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; color: var(--white); margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+    .tool-header p { font-size: 15px; color: rgba(255,255,255,0.65); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+
+    .tool-body { max-width: 1080px; margin: 0 auto; padding: 2.5rem 2rem 4rem; display: grid; grid-template-columns: 1fr 400px; gap: 2rem; align-items: start; }
+
+    /* INPUT PANEL */
+    .inputs-panel { background: var(--white); border-radius: 16px; border: 1px solid var(--gray-light); overflow: hidden; }
+    .panel-header { padding: 1.25rem 1.75rem; border-bottom: 1px solid var(--gray-light); display: flex; align-items: center; justify-content: space-between; }
+    .panel-header h2 { font-size: 15px; font-weight: 600; color: var(--navy); }
+    .panel-header span { font-size: 12px; color: var(--gray); }
+
+    /* MULTIPLIER BANNER */
+    .multiplier-banner { padding: 0.9rem 1.75rem; display: flex; align-items: center; gap: 0.75rem; font-size: 13px; border-bottom: 1px solid var(--gray-light); transition: background 0.3s; }
+    .multiplier-badge { font-size: 11px; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 20px; white-space: nowrap; }
+    .multiplier-label { color: var(--gray-dark); flex: 1; }
+    .multiplier-value { font-weight: 700; font-size: 14px; }
+
+    .factor { padding: 1.25rem 1.75rem; border-bottom: 1px solid var(--gray-light); }
+    .factor:last-child { border-bottom: none; }
+    .factor-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; gap: 1rem; }
+    .factor-meta {}
+    .factor-label { font-size: 14px; font-weight: 600; color: var(--navy); }
+    .factor-sub { font-size: 12px; color: var(--gray); margin-top: 1px; }
+    .factor-weight { font-size: 11px; color: var(--accent); font-weight: 600; background: #EBF5FF; padding: 0.2rem 0.6rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+
+    .factor-options { display: flex; flex-direction: column; gap: 0.4rem; }
+    .option-btn { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.9rem; border-radius: 8px; border: 1.5px solid var(--gray-light); background: var(--white); cursor: pointer; transition: all 0.15s; text-align: left; width: 100%; font-family: var(--font); }
+    .option-btn:hover { border-color: var(--accent); background: #EBF5FF; }
+    .option-btn.selected { border-color: var(--accent); background: #EBF5FF; }
+    .option-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--gray-light); flex-shrink: 0; transition: all 0.15s; background: var(--white); }
+    .option-btn:hover .option-dot, .option-btn.selected .option-dot { border-color: var(--accent); background: var(--accent); }
+    .option-text { font-size: 13px; color: var(--gray-dark); flex: 1; }
+    .option-btn.selected .option-text { color: var(--navy); font-weight: 500; }
+    .option-pts { font-size: 11px; color: var(--gray); font-weight: 500; flex-shrink: 0; }
+    .option-btn.selected .option-pts { color: var(--accent); font-weight: 700; }
+
+    /* RESULTS */
+    .results-panel { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .score-card { background: var(--white); border-radius: 16px; border: 1px solid var(--gray-light); overflow: hidden; }
+    .card-header { padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--gray-light); display: flex; align-items: center; justify-content: space-between; }
+    .card-header h2 { font-size: 14px; font-weight: 600; color: var(--navy); }
+    .answered-count { font-size: 11px; color: var(--gray); }
+
+    .score-display { padding: 1.5rem 1.5rem 1.25rem; text-align: center; }
+    .gauge-wrap { position: relative; width: 180px; height: 100px; margin: 0 auto 1rem; }
+    .gauge-svg { width: 180px; height: 100px; }
+    .gauge-track { fill: none; stroke: var(--gray-light); stroke-width: 14; stroke-linecap: round; }
+    .gauge-fill { fill: none; stroke-width: 14; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease, stroke 0.5s ease; }
+    .gauge-number { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); font-size: 2.4rem; font-weight: 700; color: var(--navy); line-height: 1; transition: color 0.4s; }
+    .risk-level { font-size: 13px; font-weight: 700; padding: 0.4rem 1.1rem; border-radius: 30px; display: inline-block; transition: all 0.4s; }
+    .risk-summary { font-size: 12px; color: var(--gray); line-height: 1.55; margin-top: 0.75rem; }
+
+    /* MULTIPLIER DISPLAY */
+    .multiplier-display { margin: 0 1.5rem 1rem; padding: 0.75rem 1rem; border-radius: 8px; background: var(--off-white); border: 1px solid var(--gray-light); display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+    .multiplier-display .label { color: var(--gray-dark); }
+    .multiplier-display .value { font-weight: 700; font-size: 13px; }
+
+    /* BREAKDOWN */
+    .breakdown-section { padding: 0 1.5rem 1.25rem; border-top: 1px solid var(--gray-light); }
+    .breakdown-title { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.9rem 0 0.6rem; }
+    .breakdown-item { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.45rem; }
+    .breakdown-name { font-size: 11px; color: var(--gray-dark); min-width: 100px; }
+    .breakdown-bar-wrap { flex: 1; height: 5px; background: var(--gray-light); border-radius: 3px; overflow: hidden; }
+    .breakdown-bar { height: 100%; border-radius: 3px; transition: width 0.4s ease, background 0.4s ease; }
+    .breakdown-pts { font-size: 11px; font-weight: 600; min-width: 30px; text-align: right; }
+
+    /* COMBO ALERTS */
+    .combos-card { background: var(--white); border-radius: 16px; border: 1px solid var(--gray-light); overflow: hidden; }
+    .combos-list { padding: 0.75rem 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .combo-alert { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.75rem 0.9rem; border-radius: 8px; border-left: 3px solid var(--red); background: var(--red-bg); }
+    .combo-icon { font-size: 14px; flex-shrink: 0; }
+    .combo-title { font-size: 12px; font-weight: 700; color: var(--red-text); margin-bottom: 0.15rem; }
+    .combo-desc { font-size: 11px; color: var(--red-text); opacity: 0.8; line-height: 1.4; }
+    .no-combos { padding: 1rem 1.25rem; font-size: 12px; color: var(--gray); text-align: center; }
+
+    /* PLAYS */
+    .plays-card { background: var(--white); border-radius: 16px; border: 1px solid var(--gray-light); overflow: hidden; }
+    .plays-list { padding: 0.75rem 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .play-item { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.75rem 0.9rem; border-radius: 8px; background: var(--off-white); border-left: 3px solid var(--accent); }
+    .play-icon { font-size: 14px; flex-shrink: 0; }
+    .play-title { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+    .play-desc { font-size: 11px; color: var(--gray-dark); line-height: 1.5; }
+    .no-plays { padding: 1rem 1.25rem; font-size: 12px; color: var(--gray); text-align: center; }
+
+    .tool-note { max-width: 1080px; margin: 0 auto; padding: 0 2rem 3rem; }
+    .note-inner { background: var(--navy); border-radius: 14px; padding: 1.5rem 2rem; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+    .note-text { flex: 1; min-width: 260px; }
+    .note-text h3 { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 0.35rem; }
+    .note-text p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .note-btn { display: inline-flex; align-items: center; background: var(--accent); color: var(--white); text-decoration: none; padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; transition: background 0.2s; }
+    .note-btn:hover { background: #1a72cc; }
+
+    @media (max-width: 800px) {
+      .tool-body { grid-template-columns: 1fr; }
+      .results-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-name">Amanda Semmel Mackie</span>
+  <a href="index.html" class="nav-back">← Back to site</a>
+</nav>
+
+<div class="tool-header">
+  <div class="tool-badge">CS Leadership Framework</div>
+  <h1>Renewal Risk Predictor</h1>
+  <p>Built on the methodology I used to manage $80M in enterprise ARR — and validated against current SaaS churn research. 9 weighted signals. Renewal timeline multiplies everything, because time changes the math.</p>
+</div>
+
+<div style="max-width: 1080px; margin: 1.25rem auto 0; padding: 0 2rem;">
+  <div style="background: rgba(46,134,222,0.08); border: 1px solid rgba(46,134,222,0.2); border-radius: 10px; padding: 0.9rem 1.25rem; display: flex; gap: 0.75rem; align-items: flex-start;">
+    <span style="font-size: 16px; flex-shrink: 0; margin-top: 1px;">💡</span>
+    <div style="font-size: 13px; color: #1E4570; line-height: 1.6;">
+      <strong>This is a simplified field framework</strong> — it captures observable relationship and engagement signals that a CSM can assess without tooling. A full CS platform adds a deeper layer: real-time product usage telemetry at the feature level, ROI tracking against the customer's signed-off success metrics, and issue resolution rates and time-to-close trends. Those platform signals are what enterprise CS tools like Gainsight and Totango are built to surface. This tool is the conversation layer — the human intelligence that sits on top of the data.
+    </div>
+  </div>
+</div>
+
+<div class="tool-body">
+
+  <!-- INPUTS -->
+  <div class="inputs-panel">
+    <div class="panel-header">
+      <h2>Account Signals</h2>
+      <span id="progress-label">0 of 8 answered</span>
+    </div>
+
+    <div class="multiplier-banner" id="multiplier-banner" style="background: var(--off-white);">
+      <span class="multiplier-badge" id="mult-badge" style="background:var(--green-bg);color:var(--green-text);">1.0×</span>
+      <span class="multiplier-label"><strong>Renewal Urgency Multiplier</strong> — set by months to renewal below. Amplifies all other risk signals.</span>
+      <span class="multiplier-value" id="mult-label" style="color:var(--green);">No urgency</span>
+    </div>
+
+    <div id="factors-list"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-panel">
+
+    <div class="score-card">
+      <div class="card-header">
+        <h2>Risk Score</h2>
+        <span class="answered-count" id="answered-count">Answer signals to score</span>
+      </div>
+      <div class="score-display">
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 180 100">
+            <path class="gauge-track" d="M 20 90 A 70 70 0 0 1 160 90" />
+            <path class="gauge-fill" id="gauge-fill" d="M 20 90 A 70 70 0 0 1 160 90" stroke-dasharray="220" stroke-dashoffset="220" stroke="var(--green)" />
+          </svg>
+          <div class="gauge-number" id="score-number">—</div>
+        </div>
+        <div class="risk-level" id="risk-level" style="background:var(--gray-light);color:var(--gray);">Awaiting input</div>
+        <div class="risk-summary" id="risk-summary">Select account signals to generate your risk assessment.</div>
+      </div>
+
+      <div class="multiplier-display" id="mult-display">
+        <span class="label">Renewal multiplier applied</span>
+        <span class="value" id="mult-display-value" style="color:var(--gray);">—</span>
+      </div>
+
+      <div class="breakdown-section">
+        <div class="breakdown-title">Factor Breakdown</div>
+        <div id="breakdown-list"></div>
+      </div>
+    </div>
+
+    <div class="combos-card" id="combos-card">
+      <div class="card-header"><h2>⚠️ Critical Combinations</h2></div>
+      <div class="combos-list" id="combos-list">
+        <div class="no-combos">No dangerous signal combinations detected yet.</div>
+      </div>
+    </div>
+
+    <div class="plays-card">
+      <div class="card-header">
+        <h2>Recommended Plays</h2>
+      </div>
+      <div class="plays-list" id="plays-list">
+        <div class="no-plays">Plays appear when risk signals are flagged.</div>
+      </div>
+    </div>
+
+    <div class="score-card" id="brief-card">
+      <div class="card-header">
+        <h2>🤖 AI Account Health Brief</h2>
+        <span class="answered-count">Powered by Claude</span>
+      </div>
+      <div style="padding: 1.25rem 1.5rem;">
+        <p style="font-size: 13px; color: var(--gray-dark); line-height: 1.6; margin-bottom: 1rem;">Generate a written health brief from your assessment — the kind you'd put in a CRM note or send to your VP. Complete at least 5 signals first.</p>
+        <button id="generate-btn" onclick="generateBrief()" style="width:100%; padding: 0.75rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: background 0.2s;" onmouseover="this.style.background='#1a72cc'" onmouseout="this.style.background='var(--accent)'">
+          Generate Account Health Brief →
+        </button>
+        <div id="brief-output" style="display:none; margin-top: 1.25rem;">
+          <div style="height: 1px; background: var(--gray-light); margin-bottom: 1.25rem;"></div>
+          <div id="brief-text" style="font-size: 13px; color: var(--gray-dark); line-height: 1.8; white-space: pre-wrap;"></div>
+          <button onclick="copyBrief()" style="margin-top: 1rem; width: 100%; padding: 0.6rem; background: transparent; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font);">Copy to clipboard</button>
+        </div>
+        <div id="brief-error" style="display:none; margin-top: 0.75rem; padding: 0.75rem; background: var(--red-bg); border-radius: 8px; font-size: 12px; color: var(--red-text);"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="tool-note">
+  <div class="note-inner">
+    <div class="note-text">
+      <h3>This is how I think about CS.</h3>
+      <p>This framework reflects 7+ years managing enterprise accounts in regulated environments where a missed renewal signal is expensive. Want to talk through how this applies to your team?</p>
+    </div>
+    <a href="mailto:ALSemmel@gmail.com" class="note-btn">Get in touch →</a>
+  </div>
+</div>
+
+<script>
+// ─── SCORING ARCHITECTURE ────────────────────────────────────────────────────
+// Each factor has a weighted max. Renewal timeline is a MULTIPLIER on the sum.
+// Dangerous combinations trigger bonus risk and explicit alerts.
+// Normalized score = min(100, (adjusted_raw / SCORE_CAP) * 100)
+// SCORE_CAP = what a "very bad but realistic" scenario looks like before combos.
+
+const SCORE_CAP = 145;
+
+const FACTORS = [
+  {
+    id: 'champion',
+    label: 'Champion Stability',
+    sub: 'Status of your primary internal advocate',
+    weight: 20,
+    weightLabel: 'Highest weight',
+    options: [
+      { text: 'Champion is strong, vocal, and actively engaged', pts: 0 },
+      { text: 'Champion present but less visible lately', pts: 5 },
+      { text: 'Champion recently changed roles internally', pts: 10 },
+      { text: 'No clear champion — relationship is fragmented', pts: 15 },
+      { text: 'Champion left, no replacement identified', pts: 20 },
+    ]
+  },
+  {
+    id: 'adoption',
+    label: 'Platform Adoption Rate',
+    sub: '% of licensed users active in the last 30 days',
+    weight: 18,
+    weightLabel: 'High weight',
+    options: [
+      { text: 'Above 75% — strong, growing usage', pts: 0 },
+      { text: '50–75% — solid but room to grow', pts: 4 },
+      { text: '25–50% — underutilization is visible', pts: 9 },
+      { text: '10–25% — adoption is a real concern', pts: 14 },
+      { text: 'Below 10% — critical adoption failure', pts: 18 },
+    ]
+  },
+  {
+    id: 'csat',
+    label: 'Last CSAT / NPS Score',
+    sub: 'Most recent measured client satisfaction',
+    weight: 18,
+    weightLabel: 'High weight',
+    options: [
+      { text: '9–10 — strong promoter', pts: 0 },
+      { text: '7–8 — satisfied, not vocal', pts: 4 },
+      { text: '5–6 — passive, some frustration emerging', pts: 9 },
+      { text: '3–4 — dissatisfied, actively concerned', pts: 14 },
+      { text: '1–2 — active detractor', pts: 18 },
+    ]
+  },
+  {
+    id: 'breadth',
+    label: 'Feature / Product Breadth',
+    sub: 'How many licensed features or modules the client actively uses',
+    weight: 14,
+    weightLabel: 'High weight',
+    options: [
+      { text: 'Using most or all licensed capabilities — deeply embedded', pts: 0 },
+      { text: 'Using the majority — some untapped potential', pts: 4 },
+      { text: 'Using roughly half — significant capabilities going unused', pts: 8 },
+      { text: 'Using one or two features — minimal platform footprint', pts: 11 },
+      { text: 'Barely engaging with the product at all', pts: 14 },
+    ]
+  },
+  {
+    id: 'csm_response',
+    label: 'CSM Engagement Rate',
+    sub: 'How readily the client responds to outreach, accepts meetings, initiates contact',
+    weight: 12,
+    weightLabel: 'Leading indicator — 60–90 day signal',
+    options: [
+      { text: 'Highly responsive — proactive, accepts meetings quickly', pts: 0 },
+      { text: 'Generally responsive — normal lag, no concern', pts: 2 },
+      { text: 'Response times slowing — some declined or rescheduled meetings', pts: 5 },
+      { text: 'Difficult to reach — consistent delays, limited engagement', pts: 9 },
+      { text: 'Gone dark — not responding to outreach at all', pts: 12 },
+    ]
+  },
+  {
+    id: 'contract',
+    label: 'Recent Contract Movement',
+    sub: 'Expansion or contraction at last renewal or in last 12 months',
+    weight: 16,
+    weightLabel: 'High weight',
+    options: [
+      { text: 'Expanded — added seats, modules, or services', pts: 0 },
+      { text: 'Flat renewal — status quo maintained', pts: 4 },
+      { text: 'Reduced scope or seats at last renewal', pts: 11 },
+      { text: 'Partial cancellation of products or services', pts: 16 },
+    ]
+  },
+  {
+    id: 'exec',
+    label: 'Executive Engagement',
+    sub: 'Weeks since last VP+ touchpoint with the client',
+    weight: 14,
+    weightLabel: 'Medium-high weight',
+    options: [
+      { text: 'Within the last 4 weeks', pts: 0 },
+      { text: '4–8 weeks ago', pts: 3 },
+      { text: '8–16 weeks ago', pts: 7 },
+      { text: '16–24 weeks ago — relationship cooling', pts: 11 },
+      { text: 'More than 6 months — relationship is cold', pts: 14 },
+    ]
+  },
+  {
+    id: 'support',
+    label: 'Support Ticket Trend',
+    sub: 'Volume and severity vs. prior 90 days',
+    weight: 10,
+    weightLabel: 'Medium weight',
+    options: [
+      { text: 'Decreased — fewer issues, platform is stable', pts: 0 },
+      { text: 'Stable — no meaningful change', pts: 2 },
+      { text: 'Increased moderately — some friction', pts: 5 },
+      { text: 'Increased significantly — growing frustration', pts: 8 },
+      { text: 'Critical issue or active escalation open', pts: 10 },
+    ]
+  },
+  {
+    id: 'qbr',
+    label: 'QBR Cadence',
+    sub: 'Time since last executive business review — healthy = within 90 days (quarterly)',
+    weight: 8,
+    weightLabel: 'Process signal',
+    options: [
+      { text: 'Within 90 days — on cadence', pts: 0 },
+      { text: '90–180 days — one quarter missed', pts: 3 },
+      { text: '180–270 days — two quarters missed', pts: 6 },
+      { text: 'More than 9 months — critical gap', pts: 8 },
+    ]
+  },
+  {
+    id: 'renewal',
+    label: 'Months Until Renewal',
+    sub: 'Sets urgency multiplier — amplifies all other risk signals',
+    weight: null,
+    weightLabel: 'Urgency multiplier',
+    isMultiplier: true,
+    options: [
+      { text: 'More than 12 months — time to course-correct', multiplier: 0.8,  multLabel: 'Low urgency', multColor: 'var(--green)', multBg: 'var(--green-bg)', multText: 'var(--green-text)' },
+      { text: '9–12 months — begin planning now', multiplier: 1.0,  multLabel: 'Normal',       multColor: 'var(--gray)',  multBg: 'var(--gray-light)', multText: 'var(--gray-dark)' },
+      { text: '6–9 months — active renewal window', multiplier: 1.3,  multLabel: '1.3× urgency', multColor: 'var(--yellow)', multBg: 'var(--yellow-bg)', multText: 'var(--yellow-text)' },
+      { text: '3–6 months — renewal is imminent', multiplier: 1.6,  multLabel: '1.6× urgency', multColor: 'var(--orange)', multBg: 'var(--orange-bg)', multText: 'var(--orange-text)' },
+      { text: 'Less than 3 months — critical timeline', multiplier: 2.0,  multLabel: '2.0× urgency', multColor: 'var(--red)',   multBg: 'var(--red-bg)',   multText: 'var(--red-text)' },
+    ]
+  },
+];
+
+const COMBOS = [
+  {
+    id: 'no_champion_near_renewal',
+    check: (s) => s.champion >= 15 && s.renewalMultiplier >= 1.6,
+    bonusPts: 18,
+    icon: '🚨',
+    title: 'No Champion + Renewal Imminent',
+    desc: 'A relationship with no internal advocate within 6 months of renewal is a critical escalation. Assign an executive sponsor internally and begin stakeholder mapping immediately.'
+  },
+  {
+    id: 'adoption_failure_near_renewal',
+    check: (s) => s.adoption >= 9 && s.csat >= 9 && s.renewalMultiplier >= 1.6,
+    bonusPts: 15,
+    icon: '⚡',
+    title: 'Value Not Realized + Renewal Imminent',
+    desc: 'Low adoption and low satisfaction within 6 months of renewal is a dangerous combination. The customer cannot justify the spend. Build a 60-day value realization sprint before the renewal conversation starts.'
+  },
+  {
+    id: 'exec_gone_no_champion',
+    check: (s) => s.exec >= 11 && s.champion >= 15,
+    bonusPts: 12,
+    icon: '📉',
+    title: 'Relationship in Freefall',
+    desc: 'Executive disengagement combined with champion instability means the relationship has no anchor. This account will drift to churn without active intervention at the leadership level — yours and theirs.'
+  },
+  {
+    id: 'contraction_low_csat',
+    check: (s) => s.contract >= 11 && s.csat >= 9,
+    bonusPts: 10,
+    icon: '⚠️',
+    title: 'Contraction + Dissatisfaction',
+    desc: 'They already voted with their wallet and they\'re still unhappy. Before any expansion conversation, resolve the underlying dissatisfaction. A second contraction is likely without a recovery plan.'
+  },
+  {
+    id: 'gone_dark_no_champion',
+    check: (s) => s.csm_response >= 9 && s.champion >= 15,
+    bonusPts: 16,
+    icon: '🔴',
+    title: 'Complete Relationship Breakdown',
+    desc: 'No champion and no response to outreach is a near-total loss of relationship access. This account is invisible and drifting. Escalate to your own leadership immediately and attempt contact through every available channel — including Sales.'
+  },
+];
+
+const RISK_LEVELS = [
+  { max: 25,  label: 'Low Risk',               color: 'var(--green)',  bg: 'var(--green-bg)',  text: 'var(--green-text)',  summary: 'This account is in a healthy position. Maintain proactive engagement and look for expansion opportunities.' },
+  { max: 50,  label: 'Monitor Closely',         color: 'var(--yellow)', bg: 'var(--yellow-bg)', text: 'var(--yellow-text)', summary: 'Some signals warrant attention. Prioritize the flagged areas before they compound into harder conversations at renewal.' },
+  { max: 72,  label: 'Intervention Required',   color: 'var(--orange)', bg: 'var(--orange-bg)', text: 'var(--orange-text)', summary: 'This account needs active management now. Assign an escalation owner and execute the recommended plays with urgency.' },
+  { max: 999, label: 'Renewal at Risk',          color: 'var(--red)',    bg: 'var(--red-bg)',    text: 'var(--red-text)',    summary: 'High churn risk. Escalate internally, align with Sales leadership, and treat this as a recovery situation.' },
+];
+
+const PLAYS = {
+  champion:  { threshold: 10, icon: '🗺️', title: 'Stakeholder Mapping Play', desc: 'Map all active contacts and identify rising advocates within the account. Invest in relationships at multiple levels. A single-threaded account is a fragile account.' },
+  adoption:  { threshold: 9,  icon: '📈', title: 'Usage Adoption Play', desc: 'Schedule a platform deep-dive with your solutions team. Map underused features to the client\'s stated business outcomes. Consider a targeted enablement session for power users.' },
+  csat:      { threshold: 9,  icon: '🔍', title: 'Voice of Customer Play', desc: 'Conduct an unstructured listening session with key stakeholders before concerns become formal complaints. Document commitments made and follow up in writing within 48 hours.' },
+  contract:  { threshold: 4,  icon: '📉', title: 'Recovery Play', desc: 'Understand the drivers of contraction before any expansion conversation. Build a 90-day value realization plan with measurable milestones. Let the results create the opening for growth.' },
+  exec:      { threshold: 7,  icon: '🤝', title: 'Executive Re-engagement Play', desc: 'Request a brief executive alignment call through your champion. Lead with a business impact summary tied to their stated goals — not a product update. Make it easy to say yes.' },
+  support:   { threshold: 5,  icon: '🛠️', title: 'Technical Health Review', desc: 'Schedule a dedicated technical health review with your solutions team and the client\'s IT stakeholders. Surface the underlying patterns — and bring a remediation plan to the meeting.' },
+  qbr:       { threshold: 5,  icon: '📋', title: 'QBR Acceleration Play', desc: 'Schedule a QBR immediately — even a leaner version is better than silence. Use it to reset the relationship, surface concerns, and align on success criteria for the next 90 days.' },
+  breadth:   { threshold: 8,  icon: '🧩', title: 'Platform Expansion Play', desc: 'Map unused features against the client\'s stated business objectives. Build a focused use case for the two or three capabilities with the highest ROI potential. Underutilized platforms are easy to defund at renewal.' },
+  csm_response: { threshold: 5, icon: '📡', title: 'Re-engagement Play', desc: 'Declining response rates precede disengagement by 60–90 days on average. Change the channel — try a brief executive note, a relevant industry insight, or a warm introduction through a mutual contact. If the account goes dark, involve your champion or Sales immediately.' },
+};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const state = { champion: null, adoption: null, csat: null, breadth: null, csm_response: null, contract: null, exec: null, support: null, qbr: null, renewal: null, renewalMultiplier: 1.0 };
+
+// ─── BUILD UI ─────────────────────────────────────────────────────────────────
+function buildFactors() {
+  const container = document.getElementById('factors-list');
+  FACTORS.forEach(factor => {
+    const div = document.createElement('div');
+    div.className = 'factor';
+    const weightTag = factor.isMultiplier
+      ? `<span class="factor-weight" style="background:#FFF7ED;color:#9A3412;">Urgency multiplier</span>`
+      : `<span class="factor-weight">Max ${factor.weight} pts &middot; ${factor.weightLabel}</span>`;
+    div.innerHTML = `
+      <div class="factor-top">
+        <div class="factor-meta">
+          <div class="factor-label">${factor.label}</div>
+          <div class="factor-sub">${factor.sub}</div>
+        </div>
+        ${weightTag}
+      </div>
+      <div class="factor-options">
+        ${factor.options.map((opt, i) => {
+          const pts = factor.isMultiplier ? `${opt.multiplier}×` : (opt.pts === 0 ? '✓ healthy' : `+${opt.pts}`);
+          return `<button class="option-btn" data-factor="${factor.id}" data-index="${i}" onclick="selectOption(this)">
+            <span class="option-dot"></span>
+            <span class="option-text">${opt.text}</span>
+            <span class="option-pts">${pts}</span>
+          </button>`;
+        }).join('')}
+      </div>
+    `;
+    container.appendChild(div);
+  });
+  buildBreakdown();
+}
+
+// ─── SELECTION ────────────────────────────────────────────────────────────────
+function selectOption(btn) {
+  const factorId = btn.dataset.factor;
+  const idx = parseInt(btn.dataset.index);
+  document.querySelectorAll(`[data-factor="${factorId}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  const factor = FACTORS.find(f => f.id === factorId);
+  const opt = factor.options[idx];
+
+  if (factor.isMultiplier) {
+    state.renewal = idx;
+    state.renewalMultiplier = opt.multiplier;
+    updateMultiplierBanner(opt);
+  } else {
+    state[factorId] = opt.pts;
+  }
+
+  updateResults();
+}
+
+function updateMultiplierBanner(opt) {
+  const banner = document.getElementById('multiplier-banner');
+  const badge = document.getElementById('mult-badge');
+  const label = document.getElementById('mult-label');
+  banner.style.background = opt.multBg;
+  badge.textContent = opt.multiplier + '×';
+  badge.style.background = opt.multBg;
+  badge.style.color = opt.multText;
+  badge.style.borderColor = opt.multColor;
+  label.textContent = opt.multLabel;
+  label.style.color = opt.multColor;
+}
+
+// ─── SCORE CALCULATION ────────────────────────────────────────────────────────
+function calcScore() {
+  const factorIds = ['champion', 'adoption', 'csat', 'breadth', 'csm_response', 'contract', 'exec', 'support', 'qbr'];
+  const answeredFactors = factorIds.filter(id => state[id] !== null);
+  const baseRaw = answeredFactors.reduce((sum, id) => sum + state[id], 0);
+  const multiplied = baseRaw * state.renewalMultiplier;
+
+  // Combo bonus points
+  let comboBonus = 0;
+  const triggeredCombos = COMBOS.filter(c => {
+    const allAnswered = checkComboAnswered(c.id);
+    return allAnswered && c.check(state);
+  });
+  triggeredCombos.forEach(c => comboBonus += c.bonusPts);
+
+  const adjusted = multiplied + comboBonus;
+  const normalized = answeredFactors.length < 2 ? null : Math.min(100, Math.round((adjusted / SCORE_CAP) * 100));
+
+  return { normalized, baseRaw, multiplied, comboBonus, triggeredCombos, answeredFactors };
+}
+
+function checkComboAnswered(comboId) {
+  if (comboId === 'no_champion_near_renewal') return state.champion !== null && state.renewal !== null;
+  if (comboId === 'adoption_failure_near_renewal') return state.adoption !== null && state.csat !== null && state.renewal !== null;
+  if (comboId === 'exec_gone_no_champion') return state.exec !== null && state.champion !== null;
+  if (comboId === 'contraction_low_csat') return state.contract !== null && state.csat !== null;
+  if (comboId === 'gone_dark_no_champion') return state.csm_response !== null && state.champion !== null;
+  return false;
+}
+
+// ─── UPDATE RESULTS ───────────────────────────────────────────────────────────
+function updateResults() {
+  const { normalized, baseRaw, multiplied, comboBonus, triggeredCombos, answeredFactors } = calcScore();
+  const totalAnswered = answeredFactors.length + (state.renewal !== null ? 1 : 0);
+  const total = FACTORS.length;
+
+  document.getElementById('progress-label').textContent = `${totalAnswered} of 10 answered`;
+  document.getElementById('answered-count').textContent = normalized !== null ? `${totalAnswered}/${total} signals` : 'Answer more signals';
+
+  if (normalized === null) {
+    document.getElementById('score-number').textContent = '—';
+    document.getElementById('gauge-fill').style.strokeDashoffset = '220';
+    document.getElementById('risk-level').textContent = 'Awaiting input';
+    document.getElementById('risk-level').style.background = 'var(--gray-light)';
+    document.getElementById('risk-level').style.color = 'var(--gray)';
+    document.getElementById('risk-summary').textContent = 'Answer at least 2 signals to generate a score.';
+    document.getElementById('mult-display-value').textContent = '—';
+    document.getElementById('mult-display-value').style.color = 'var(--gray)';
+  } else {
+    const level = RISK_LEVELS.find(l => normalized <= l.max) || RISK_LEVELS[RISK_LEVELS.length - 1];
+    const offset = 220 - (220 * normalized / 100);
+
+    document.getElementById('gauge-fill').style.strokeDashoffset = offset;
+    document.getElementById('gauge-fill').style.stroke = level.color;
+    document.getElementById('score-number').textContent = normalized;
+    document.getElementById('score-number').style.color = level.color;
+
+    const rl = document.getElementById('risk-level');
+    rl.textContent = level.label;
+    rl.style.background = level.bg;
+    rl.style.color = level.text;
+
+    document.getElementById('risk-summary').textContent = level.summary;
+
+    const multVal = document.getElementById('mult-display-value');
+    multVal.textContent = state.renewalMultiplier + '× (base ' + Math.round(baseRaw) + ' → ' + Math.round(multiplied) + (comboBonus > 0 ? ' + ' + comboBonus + ' combo' : '') + ')';
+    multVal.style.color = state.renewalMultiplier >= 1.6 ? 'var(--red)' : state.renewalMultiplier >= 1.3 ? 'var(--orange)' : 'var(--gray-dark)';
+  }
+
+  buildBreakdown();
+  updateCombos(triggeredCombos);
+  updatePlays();
+}
+
+function buildBreakdown() {
+  const container = document.getElementById('breakdown-list');
+  container.innerHTML = '';
+  const scorableFactors = FACTORS.filter(f => !f.isMultiplier);
+  scorableFactors.forEach(f => {
+    const pts = state[f.id] ?? 0;
+    const pct = f.weight > 0 ? (pts / f.weight) * 100 : 0;
+    const barColor = pts === 0 ? 'var(--green)' : pct < 40 ? 'var(--yellow)' : pct < 70 ? 'var(--orange)' : 'var(--red)';
+    const label = f.label.split(' ').slice(0, 2).join(' ');
+    const ptsLabel = state[f.id] === null ? '—' : pts === 0 ? '✓' : '+' + pts;
+    container.innerHTML += `
+      <div class="breakdown-item">
+        <span class="breakdown-name">${label}</span>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:${pct}%;background:${barColor};"></div></div>
+        <span class="breakdown-pts" style="color:${barColor};">${ptsLabel}</span>
+      </div>`;
+  });
+}
+
+function updateCombos(triggered) {
+  const container = document.getElementById('combos-list');
+  if (triggered.length === 0) {
+    container.innerHTML = '<div class="no-combos">No dangerous signal combinations detected.</div>';
+  } else {
+    container.innerHTML = triggered.map(c => `
+      <div class="combo-alert">
+        <span class="combo-icon">${c.icon}</span>
+        <div>
+          <div class="combo-title">${c.title}</div>
+          <div class="combo-desc">${c.desc}</div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+function updatePlays() {
+  const container = document.getElementById('plays-list');
+  const factorIds = ['champion', 'adoption', 'csat', 'breadth', 'csm_response', 'contract', 'exec', 'support', 'qbr'];
+  const triggered = factorIds.filter(id => state[id] !== null && PLAYS[id] && state[id] >= PLAYS[id].threshold);
+
+  if (triggered.length === 0) {
+    const answeredCount = factorIds.filter(id => state[id] !== null).length;
+    container.innerHTML = answeredCount >= 5
+      ? `<div style="padding:1rem;text-align:center;"><div style="font-size:1.5rem;margin-bottom:0.4rem;">✅</div><div style="font-size:13px;font-weight:600;color:var(--navy);">No interventions flagged.</div><div style="font-size:12px;color:var(--gray);margin-top:0.25rem;">Maintain cadence and watch for early signals.</div></div>`
+      : '<div class="no-plays">Plays appear when risk signals are flagged.</div>';
+    return;
+  }
+
+  container.innerHTML = triggered.map(id => `
+    <div class="play-item">
+      <span class="play-icon">${PLAYS[id].icon}</span>
+      <div>
+        <div class="play-title">${PLAYS[id].title}</div>
+        <div class="play-desc">${PLAYS[id].desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+buildFactors();
+
+// ─── AI BRIEF GENERATION ─────────────────────────────────────────────────────
+const ANTHROPIC_KEY = '';
+
+async function generateBrief() {
+  const factorIds = ['champion','adoption','csat','breadth','csm_response','contract','exec','support','qbr'];
+  const answered = factorIds.filter(id => state[id] !== null).length;
+
+  if (answered < 5) {
+    showBriefError('Please complete at least 5 signals before generating a brief.');
+    return;
+  }
+
+  const btn = document.getElementById('generate-btn');
+  const output = document.getElementById('brief-output');
+  const briefText = document.getElementById('brief-text');
+  const errorEl = document.getElementById('brief-error');
+
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  output.style.display = 'none';
+  errorEl.style.display = 'none';
+
+  const { normalized, triggeredCombos } = calcScore();
+  const level = RISK_LEVELS.find(l => normalized <= l.max) || RISK_LEVELS[RISK_LEVELS.length - 1];
+
+  const factorSummary = FACTORS.filter(f => !f.isMultiplier && state[f.id] !== null).map(f => {
+    const opt = f.options[f.options.findIndex(o => o.pts === state[f.id])];
+    return `- ${f.label}: "${opt ? opt.text : 'unknown'}" (${state[f.id]} / ${f.weight} pts)`;
+  }).join('\n');
+
+  const renewalOpt = state.renewal !== null ? FACTORS.find(f => f.isMultiplier).options[state.renewal] : null;
+  const comboSummary = triggeredCombos.length > 0
+    ? triggeredCombos.map(c => `- ${c.title}: ${c.desc}`).join('\n')
+    : 'None triggered.';
+
+  const prompt = `You are a senior enterprise Customer Success leader with 12+ years of experience managing high-complexity SaaS accounts in regulated industries.
+
+Based on the following account health assessment, write a concise account health brief (3 short paragraphs) that a CSM would put in a CRM note or send to their VP. Write in first person. Be specific, direct, and action-oriented — no corporate fluff.
+
+ASSESSMENT DATA:
+Overall Risk Score: ${normalized}/100 — ${level.label}
+Renewal Timeline: ${renewalOpt ? renewalOpt.text : 'Not specified'} (${state.renewalMultiplier}× urgency multiplier applied)
+
+Factor Signals:
+${factorSummary}
+
+Critical Combinations Detected:
+${comboSummary}
+
+FORMAT:
+Paragraph 1: Overall account status and the 2-3 most important risk drivers, stated plainly.
+Paragraph 2: What the combination of signals means for renewal probability and what is at stake.
+Paragraph 3: The single highest-priority action to take in the next two weeks, and why.
+
+Keep each paragraph to 3-4 sentences. No headers, no bullet points in the output — just clean prose.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-calls': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 500,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error?.message || `API error ${response.status}`);
+    }
+
+    const data = await response.json();
+    const text = data.content[0].text;
+
+    briefText.textContent = text;
+    output.style.display = 'block';
+  } catch (err) {
+    showBriefError(`Could not generate brief: ${err.message}`);
+  } finally {
+    btn.textContent = 'Regenerate Brief →';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+}
+
+function showBriefError(msg) {
+  const el = document.getElementById('brief-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function copyBrief() {
+  const text = document.getElementById('brief-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy to clipboard', 2000);
+  });
+}
+</script>
+</body>
+</html>
