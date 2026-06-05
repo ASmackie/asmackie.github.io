@@ -752,8 +752,15 @@ Keep each paragraph to 3-4 sentences. No headers, no bullet points in the output
     }
 
     const data = await response.json();
-    const text = data.content[0].text;
 
+    if (data.error) {
+      throw new Error(`Anthropic error: ${data.error.message || JSON.stringify(data.error)}`);
+    }
+    if (!data.content || !data.content[0]) {
+      throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
+    }
+
+    const text = data.content[0].text;
     briefText.textContent = text;
     output.style.display = 'block';
   } catch (err) {
